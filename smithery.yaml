@@ -1,0 +1,29 @@
+name: news-verifier
+displayName: News Verifier (Yahoo TW)
+description: Gathers evidence to judge whether Yahoo TW news or a claim is credible, using Yahoo News coverage, Cofacts and Google Fact Check.
+version: 0.1.0
+license: MIT
+categories:
+  - news
+  - fact-check
+tags:
+  - yahoo-news
+  - taiwan
+  - fact-check
+  - cofacts
+  - misinformation
+runtime: container
+build:
+  dockerfile: Dockerfile
+  dockerBuildPath: .
+startCommand:
+  type: http
+tools:
+  - name: verify
+    description: Collect evidence for a Yahoo TW news URL or a claim, with a verdict rubric
+  - name: fetch_yahoo_article
+    description: Fetch a Yahoo TW news article with its original publisher
+  - name: search_yahoo_news
+    description: Search Yahoo TW News
+  - name: search_fact_checks
+    description: Look up a claim in Cofacts and Google Fact Check

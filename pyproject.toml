@@ -1,0 +1,33 @@
+[project]
+name = "news-verifier"
+version = "0.1.0"
+description = "MCP server that gathers evidence to verify Yahoo TW news and claims"
+readme = "README.md"
+authors = [
+    { name = "Bruce", email = "abraver@livemail.tw" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "feedparser>=6.0.14",
+    "httpx>=0.28.1",
+    "mcp>=2.3.0",
+    "pydantic>=2.13.5",
+    "selectolax>=1.0.0",
+]
+
+[project.scripts]
+news-verifier = "news_verifier.server:main"
+
+[build-system]
+requires = ["uv_build>=0.11.16,<0.12.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+    "pytest-asyncio>=1.4.0",
+    "respx>=0.23.1",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"

@@ -1,0 +1,12 @@
+.venv
+.git
+.pytest_cache
+__pycache__
+tests
+*.md
+!README.md
+smithery_example.yaml
+.env
+manifest.json
+.mcpbignore
+*.mcpb

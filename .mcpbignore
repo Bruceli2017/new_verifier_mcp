@@ -1,0 +1,14 @@
+.venv/
+.git/
+.pytest_cache/
+__pycache__/
+*.pyc
+tests/
+.env
+.env.example
+Dockerfile
+.dockerignore
+smithery.yaml
+smithery_example.yaml
+spec.md
+*.mcpb
