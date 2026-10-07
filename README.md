@@ -66,6 +66,10 @@ Other clients: install `news-verifier.mcpb` in Claude Desktop (Settings → Exte
 
 This server is published as an **MCPB bundle**: Smithery distributes the file, and each user's MCP client runs it on their own machine over stdio. You don't host anything. On first launch, `uv` installs dependencies from `pyproject.toml` / `uv.lock`, so **users need [uv](https://docs.astral.sh/uv/) installed**.
 
+> **Why `"type": "python"` with a `uv` command?** MCPB has a native `uv` type, but Smithery CLI 1.2.0 only accepts `bun` / `python` / `node` / `binary` and fails with *"Could not determine bundle runtime from manifest"*. Smithery installs the bundle using `server.mcp_config` as written, so the `uv run …` command is what actually runs.
+
+> **Why no `tools` / `prompts` list in `manifest.json`?** Smithery copies those lists into its registry and requires full MCP definitions (`inputSchema`, object prompt arguments), while the MCPB schema rejects exactly those fields. So the manifest sets `tools_generated` / `prompts_generated` instead, and clients read the tools from the running server.
+
 ### First release
 
 1. **Install the tools** (Node.js 20+):
@@ -85,9 +89,15 @@ This server is published as an **MCPB bundle**: Smithery distributes the file, a
    `.mcpbignore` keeps tests, Docker files and `.env` out of the bundle.
 4. **(Recommended) Smoke-test the bundle from a clean folder**, the way a user's client would run it:
    ```sh
-   mkdir /tmp/nv && unzip -o news-verifier.mcpb -d /tmp/nv
-   uv run --directory /tmp/nv --no-dev --frozen news-verifier --stdio   # Ctrl+C to stop
+   mkdir -p /tmp/nv && unzip -o news-verifier.mcpb -d /tmp/nv
+   (printf '%s\n' \
+     '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{},"clientInfo":{"name":"smoke","version":"1"}}}' \
+     '{"jsonrpc":"2.0","method":"notifications/initialized"}' \
+     '{"jsonrpc":"2.0","id":2,"method":"tools/list"}'; sleep 5) \
+   | uv run --directory /tmp/nv --no-dev --frozen news-verifier --stdio 2>/dev/null \
+   | grep -o '"name":"[a-z_]*"'
    ```
+   It should print the 4 tool names and exit after ~5 s. (`sleep` keeps input open so the server can answer before it sees end-of-input.) (Running the `uv run … --stdio` command alone prints nothing and waits for a client; that's normal. Ctrl+C to stop it.)
 5. **Publish:**
    ```sh
    smithery mcp publish news-verifier.mcpb -n @<your-smithery-username>/news-verifier

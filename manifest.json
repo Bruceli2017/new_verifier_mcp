@@ -9,11 +9,19 @@
     "name": "Bruce"
   },
   "server": {
-    "type": "uv",
+    "type": "python",
     "entry_point": "src/news_verifier/server.py",
     "mcp_config": {
       "command": "uv",
-      "args": ["run", "--directory", "${__dirname}", "--no-dev", "--frozen", "news-verifier", "--stdio"],
+      "args": [
+        "run",
+        "--directory",
+        "${__dirname}",
+        "--no-dev",
+        "--frozen",
+        "news-verifier",
+        "--stdio"
+      ],
       "env": {
         "GOOGLE_FACTCHECK_API_KEY": "${user_config.google_factcheck_api_key}"
       }
@@ -28,26 +36,25 @@
       "required": false
     }
   },
-  "tools": [
-    { "name": "verify", "description": "Collect evidence for a Yahoo TW news URL or a claim, with a verdict rubric" },
-    { "name": "fetch_yahoo_article", "description": "Fetch a Yahoo TW news article with its original publisher" },
-    { "name": "search_yahoo_news", "description": "Search Yahoo TW News" },
-    { "name": "search_fact_checks", "description": "Look up a claim in Cofacts and Google Fact Check" }
-  ],
-  "prompts": [
-    {
-      "name": "verify_news",
-      "description": "Verify a Yahoo TW news URL or a claim and give a graded verdict with citations",
-      "arguments": ["target"],
-      "text": "Verify this news or claim: ${arguments.target}"
-    }
-  ],
+  "tools_generated": true,
+  "prompts_generated": true,
   "compatibility": {
-    "platforms": ["darwin", "linux", "win32"],
+    "platforms": [
+      "darwin",
+      "linux",
+      "win32"
+    ],
     "runtimes": {
       "python": ">=3.12"
     }
   },
-  "keywords": ["news", "fact-check", "taiwan", "yahoo", "cofacts", "misinformation"],
+  "keywords": [
+    "news",
+    "fact-check",
+    "taiwan",
+    "yahoo",
+    "cofacts",
+    "misinformation"
+  ],
   "license": "MIT"
 }
